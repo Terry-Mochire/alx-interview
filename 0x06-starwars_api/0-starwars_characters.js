@@ -10,19 +10,20 @@ request(url, function (error, response, body) {
     const data = JSON.parse(body);
     const characters = data.characters;
     console.log(characters);
-    printCharacters(characters);
+    printCharacters(characters, 0);
   }
 });
 
-function printCharacters (characters) {
-  for (let i = 0; i < characters.length; i++) {
-    request(characters[i], function (error, response, body) {
-      if (error) {
-        console.log(error);
-      } else {
-        const data = JSON.parse(response.body);
-        console.log(data.name);
-      }
-    });
-  }
+function printCharacters (characters, index) {
+    if (index < characters.length) {
+        request(characters[index], function (error, response, body) {
+        if (error) {
+            console.log(error);
+        } else {
+            const data = JSON.parse(body);
+            console.log(data.name);
+            printCharacters(characters, index + 1);
+        }
+        });
+    }
 }
